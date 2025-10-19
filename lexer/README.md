@@ -40,97 +40,116 @@ TIMESTAMP_LITERAL(2025-10-09T13:00:00) [Line 4]
 EOF [Line 5]
 ```
 
-## Commands
 
-### 1. read command
-- Purpose: Read data from a sensor or device.
-- Syntax : 
-```cpp
-read <IDENTIFIER> [, <TIMESTAMP>]
+## Weaknesses
+- **Large files:**
+stringstream reads the entire file into memory. For huge files, this may be inefficient. You could process line by line.
 
-<IDENTIFIER> → sensor or node name 
-(alphanumeric, starts with a letter/underscore)
+- **Error handling inside lexer:**
+If the lexer throws exceptions (e.g., regex failures), you might want a try/catch around tokenize().
 
-<TIMESTAMP> → optional; ISO 8601 timestamp 
-(YYYY-MM-DDThh:mm:ss)
+- **Invalid command-line arguments:**
+Could check for non-existent paths, directories instead of files, or file permission issues.
 
-Comma , separates identifier and timestamp 
-if both are provided
+- **Output formatting:**
+For huge token lists, consider writing to a file or summarizing counts.
+
+
+
+## Running the Lexer
+
+### Prerequisites
+- A **C++ compiler** (GCC or Clang recommended).  
+- Terminal or command prompt to run commands.  
+- Project structure should look like:
+
 ```
 
-- Identifier is mandatory. Timestamp is optional but can only appear after a valid identifier, separated by a comma.
-- Example:
-```cpp
-read tempSensor              # read current temperature
-read humiditySensor, 2025-10-09T13:00:00   # read past humidity value
+SensorLang/
+├─ build/
+├─ lexer/
+│  ├─ lexer.cpp
+│  ├─ lexer.h
+│  └─ token.h
+├─ main.cpp
+├─ example.slang
+├─ Makefile
+
+````
+
+
+### Compile the Lexer
+
+Use the provided Makefile:
+
+```bash
+make
+````
+
+* This will compile your lexer and produce an executable in the `build/` directory:
+
 ```
-- Token sequence: `KEYWORD(read) IDENTIFIER SYMBOL(',') TIMESTAMP_LITERAL`
-
-### 2. write command
-- Purpose: Write a value to a sensor, actuator, or output node.
-- Syntax : 
-```cpp
-write <IDENTIFIER>, <INTEGER_LITERAL>
-
-<IDENTIFIER> → sensor or node name 
-(alphanumeric, starts with a letter/underscore)
-
-<INTEGER_LITERAL> → numeric value to write
-
-Comma , is mandatory between identifier and value
-```
-
-- Example:
-```cpp
-write output, 100         # set output to 100
-write motorSpeed, 50      # set motor speed to 50
-```
-- Token sequence: `KEYWORD(write) IDENTIFIER SYMBOL(',') INTEGER_LITERAL`
-
-### 3. alert command
-- Purpose: Trigger an alert or log an event, possibly with a timestamp.
-- Syntax : 
-```cpp
-alert <IDENTIFIER> [, <TIMESTAMP>]
-
-<IDENTIFIER> → sensor or node name 
-(alphanumeric, starts with a letter/underscore)
-
-<TIMESTAMP> → optional; when the alert occurred
-
-Comma , separates the identifier and timestamp if provided
+build/sensorLang
 ```
 
-- Example:
-```cpp
-alert tempSensor             # current alert
-alert tempSensor, 2025-10-09T13:00:00  # historical alert
-```
-- Token sequence: `KEYWORD(alert) IDENTIFIER [SYMBOL(',') TIMESTAMP_LITERAL]`
-- Error if identifier is invalid or timestamp malformed.
+---
 
+### Run the Lexer on a `.slang` file
 
-### 4. comments
-- Purpose: Add a human-readable comment in code.
-- Syntax : 
-```cpp
-# comment text
+The lexer reads the filename from the command line:
 
-Everything after # on that line is ignored by the compiler.
-Useful for documenting sensor programs.
+```bash
+./build/sensorLang <filename>
 ```
 
-- Example:
-```cpp
-# Read temperature every 10 seconds
-read tempSensor
-```
-- Token sequence: COMMENT("# comment text")
+**Example:**
 
-## Summary
-| Command | Arguments                   | Example             | Behavior                       |
-| ------- | --------------------------- | ------------------- | ------------------------------ |
-| `read`  | IDENTIFIER [, TIMESTAMP]    | `read tempSensor`   | Read current sensor value      |
-| `write` | IDENTIFIER, INTEGER_LITERAL | `write output, 100` | Write value to device/variable |
-| `alert` | IDENTIFIER [, TIMESTAMP]    | `alert tempSensor`  | Trigger an alert event         |
-| `#`     | comment text                | `# Log every read`  | Comment, ignored by compiler   |
+```bash
+./build/sensorLang example.slang
+```
+
+* The lexer will read the file, tokenize it, and print all tokens with their type and line number.
+
+**Sample output:**
+
+```
+5 # Temperature monitoring [Line 1]
+0 read [Line 2]
+1 tempSensor [Line 2]
+0 write [Line 3]
+1 output [Line 3]
+4 , [Line 3]
+2 100 [Line 3]
+0 alert [Line 4]
+3 2025-10-09T13:00:00 [Line 4]
+7  [Line 5]
+```
+
+> Numbers correspond to token types (see token table in README).
+
+---
+
+### Clean Build Artifacts
+
+To remove compiled object files and the executable:
+
+```bash
+make clean
+```
+
+* Deletes the `build/` folder and all compiled files.
+
+---
+
+### Notes
+
+* The lexer **requires exactly one argument** (the filename).
+* If the file does not exist, it will print:
+
+```
+ERROR :: FILE NOT FOUND :: <filename>
+```
+
+* Large files may take longer since the lexer reads the entire file into memory.
+
+
