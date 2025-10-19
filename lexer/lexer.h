@@ -21,6 +21,9 @@ private:
     int line;
     void skipWhitespace();
     char peek();
+    std::string readIdentifier();
+    bool isKeyword(std::string &id);
+    std::string readInteger();
 public:
     Lexer(const std::string &text);
     std::vector<Token> tokenize();
