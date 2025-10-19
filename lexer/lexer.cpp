@@ -1,4 +1,4 @@
-#include<lexer.h>
+#include"lexer.h"
 #include<vector>
 
 
@@ -46,6 +46,7 @@ std::vector<Token> Lexer::tokenize(){
     while(this->pos < this->input.size()){
         // first of all skip all whitespaces
         this->skipWhitespace();
+        pos++;
     }
 
     // when we reach EOF

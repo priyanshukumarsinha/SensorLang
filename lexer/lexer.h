@@ -10,7 +10,7 @@ while (not end of input) {
 }
 */
 #include<vector>
-#include<token.h>
+#include"token.h"
 #ifndef LEXER_H
 #define LEXER_H
 
