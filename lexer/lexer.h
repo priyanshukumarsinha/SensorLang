@@ -19,6 +19,7 @@ private:
     std::string input;
     size_t pos;
     int line;
+    void skipWhitespace();
 public:
     Lexer(const std::string &text);
     std::vector<Token> tokenize();
