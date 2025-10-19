@@ -25,7 +25,8 @@ private:
     bool isKeyword(std::string &id);
     std::string readInteger();
     std::string readTimeStamp();
-    std::string readSymbol();
+    bool isSymbol();
+    std::string readComment();
     
 public:
     Lexer(const std::string &text);

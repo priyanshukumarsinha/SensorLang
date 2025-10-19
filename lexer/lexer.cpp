@@ -63,8 +63,25 @@ std::string Lexer::readTimeStamp(){
     return "";
 }
 
-std::string Lexer::readSymbol(){
-    
+bool Lexer::isSymbol(){
+    // a symbol is only of size 1;
+    if(this->peek() == '=' || this->peek()==';' || this->peek()==','){
+        return 0;
+    }
+    return 1;
+}
+
+std::string Lexer::readComment(){
+    // starts with a #
+    size_t start = pos;
+    if(this->peek() == '#'){
+        pos++;
+        while(this->peek() != '\n' && this->peek() != '\0'){
+            pos++;
+        }
+        return this->input.substr(start, pos-start);
+    }
+    return "";
 }
 
 char Lexer::peek(){
@@ -143,9 +160,16 @@ std::vector<Token> Lexer::tokenize(){
         }
 
         // 5. Symbol
-        std::string sym = this->readSymbol();
-        if(!sym.empty()){
-            tokens.push_back({TokenType::SYMBOL, sym, this->line});
+        if(this->isSymbol()){
+            tokens.push_back({TokenType::SYMBOL, std::string(1, this->input[pos]), this->line});
+            pos++;
+            continue;
+        }
+
+        // 6. Comment
+        std::string cmt = readComment();
+        if(!cmt.empty()){
+            tokens.push_back({TokenType::COMMENT, cmt, this->line});
             continue;
         }
         pos++;
