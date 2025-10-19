@@ -8,7 +8,13 @@ SRCS = $(SRC_DIR)/main.cpp \
 OBJS = $(BUILD_DIR)/main.o \
 	   $(BUILD_DIR)/lexer.o
 
-TARGET = $(BUILD_DIR)/sensorlang
+# ifeq ($(OS),Windows_NT)
+# 	TARGET = $(BUILD_DIR)/sensorlang.exe
+# else
+# 	TARGET = $(BUILD_DIR)/sensorlang
+# endif
+TARGET = $(BUILD_DIR)/sensorlang.exe
+
 
 all: $(TARGET)
 
