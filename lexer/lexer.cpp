@@ -66,9 +66,9 @@ std::string Lexer::readTimeStamp(){
 bool Lexer::isSymbol(){
     // a symbol is only of size 1;
     if(this->peek() == '=' || this->peek()==';' || this->peek()==','){
-        return 0;
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
 std::string Lexer::readComment(){
@@ -172,8 +172,9 @@ std::vector<Token> Lexer::tokenize(){
             tokens.push_back({TokenType::COMMENT, cmt, this->line});
             continue;
         }
-        pos++;
 
+        // 7. The last one is Invalid
+        tokens.push_back({TokenType::INVALID, std::string(1, this->input[this->pos]), this->line});
     }
 
     // when we reach EOF
