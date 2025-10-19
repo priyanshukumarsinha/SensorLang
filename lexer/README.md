@@ -5,16 +5,16 @@
 
 ## Token Types in our Compiler
 
-| **Token Type**        | **Formal Definition / Regex Pattern**                   | **Description**                                                                                | **Example**                  |
-| --------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------- |
-| **KEYWORD**           | `read \| write \| alert`                                | Reserved words for sensor operations.                                                          | `read`, `write`, `alert`     |
-| **IDENTIFIER**        | `[a-zA-Z_][a-zA-Z0-9_]*`                                | User-defined names for sensors, devices, or variables. Must start with a letter or underscore. | `tempSensor`, `humidity1`    |
-| **INTEGER_LITERAL**   | `[0-9]+`                                                | Integer constants used for numeric data or thresholds.                                         | `100`, `25`, `999`           |
-| **TIMESTAMP_LITERAL** | `[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}` | Timestamp value in ISO 8601 format (YYYY-MM-DDThh:mm:ss).                                      | `2025-10-09T13:00:00`        |
-| **SYMBOL**            | `[=;,]`                                                 | Single-character punctuation symbols.                                                          | `=`, `;`, `,`                |
-| **COMMENT**           | `#.*`                                                   | Single-line comment (ignored by compiler, but counted for line tracking).                      | `# Sensor node config`       |
-| **WHITESPACE**        | `[ \t\r\n]+`                                            | Spaces, tabs, and newlines (ignored except for line count).                                    | —                            |
-| **INVALID**           | Any unrecognized or malformed token.                    | Used to flag lexical errors.                                                                   | `@temp`, `20-25-01T15:99:00` |
+| **Token Code** | **Token Type**        | **Formal Definition / Regex Pattern**                   | **Description**                                                                                | **Example**                  |
+| ------- |--------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------- |
+| 0. | **KEYWORD**           | `read \| write \| alert`                                | Reserved words for sensor operations.                                                          | `read`, `write`, `alert`     |
+| 1. | **IDENTIFIER**        | `[a-zA-Z_][a-zA-Z0-9_]*`                                | User-defined names for sensors, devices, or variables. Must start with a letter or underscore. | `tempSensor`, `humidity1`    |
+| 2. | **INTEGER_LITERAL**   | `[0-9]+`                                                | Integer constants used for numeric data or thresholds.                                         | `100`, `25`, `999`           |
+| 3. | **TIMESTAMP_LITERAL** | `[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}` | Timestamp value in ISO 8601 format (YYYY-MM-DDThh:mm:ss).                                      | `2025-10-09T13:00:00`        |
+| 4. | **SYMBOL**            | `[=;,]`                                                 | Single-character punctuation symbols.                                                          | `=`, `;`, `,`                |
+| 5. | **COMMENT**           | `#.*`                                                   | Single-line comment (ignored by compiler, but counted for line tracking).                      | `# Sensor node config`       |
+| 6. | **INVALID**           | Any unrecognized or malformed token.                    | Used to flag lexical errors.                                                                   | `@temp`, `20-25-01T15:99:00` |
+| #. | **WHITESPACE**        | `[ \t\r\n]+`                                            | Spaces, tabs, and newlines (ignored except for line count).                                    | —                            |
 
 
 ## Example

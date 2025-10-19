@@ -6,7 +6,7 @@ int main(int argc, char*argv[]){
     // so doesn't need to end with ;
 
     if(argc!=2){
-        std::cerr << "Usage: " << argv[0] << "<filename>\n";
+        std::cerr << "Usage: " << argv[0] << " <filename>\n";
         return 1;
     }
 
