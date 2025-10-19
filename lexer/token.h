@@ -7,6 +7,7 @@ enum class TokenType{
     KEYWORD,
     IDENTIFIER,
     INTEGER_LITERAL,
+    TIMESTAMP_LITERAL,
     SYMBOL,
     COMMENT,
     INVALID,

@@ -24,6 +24,9 @@ private:
     std::string readIdentifier();
     bool isKeyword(std::string &id);
     std::string readInteger();
+    std::string readTimeStamp();
+    std::string readSymbol();
+    
 public:
     Lexer(const std::string &text);
     std::vector<Token> tokenize();

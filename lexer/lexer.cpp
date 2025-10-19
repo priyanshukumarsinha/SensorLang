@@ -50,6 +50,23 @@ std::string Lexer::readInteger(){
     return "";
 }
 
+std::string Lexer::readTimeStamp(){
+    // it should start with an integer
+    size_t start = this->pos;
+    std::regex pattern(R"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})");
+    std::string ts = input.substr(pos, 19); 
+    // is should be of size 19 only
+    if(std::regex_match(ts, pattern)){
+        pos+=19;
+        return ts;
+    }
+    return "";
+}
+
+std::string Lexer::readSymbol(){
+    
+}
+
 char Lexer::peek(){
     return (this->pos < this->input.size())?input[pos]:'\0';
     // returns current element i.e input[pos]
@@ -112,9 +129,24 @@ std::vector<Token> Lexer::tokenize(){
 
         // 3. Integer_literal [0-9]+ (fist we need to check for timestamp)
         // if we check for integer first, timestamp's 2025-... 2025 will be treated as an integer
+        // 4. Timestamp_literal [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}
+        std::string timestmp = this->readTimeStamp();
+        if(!timestmp.empty()){
+            tokens.push_back({TokenType::TIMESTAMP_LITERAL, timestmp, this->line});
+            continue;
+        }
+
         std::string num = this->readInteger();
         if(!num.empty()){
             tokens.push_back({TokenType::INTEGER_LITERAL, num, this->line});
+            continue;
+        }
+
+        // 5. Symbol
+        std::string sym = this->readSymbol();
+        if(!sym.empty()){
+            tokens.push_back({TokenType::SYMBOL, sym, this->line});
+            continue;
         }
         pos++;
 
