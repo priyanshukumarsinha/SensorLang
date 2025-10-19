@@ -20,6 +20,7 @@ private:
     size_t pos;
     int line;
     void skipWhitespace();
+    char peek();
 public:
     Lexer(const std::string &text);
     std::vector<Token> tokenize();

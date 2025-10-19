@@ -8,8 +8,14 @@ Lexer::Lexer(const std::string& text){
     this->line = 1;
 }
 
+char Lexer::peek(){
+    return (this->pos < this->input.size())?input[pos]:'\0';
+    // returns current element i.e input[pos]
+    // without incrementing pos
+}
+
 void Lexer::skipWhitespace(){
-    while(this->pos < this->input.size() && isspace(this->input[pos])){
+    while(isspace(this->peek())){
         // isspace() returns true for ' ', '\n', '\t'
         // Character: ' ' -> isspace()? true
         // Character: '\t' -> isspace()? true
@@ -22,10 +28,8 @@ void Lexer::skipWhitespace(){
         // Character: # -> isspace()? false
         // Character: \0 -> isspace()? false
 
-        // but with a peek() function we can make it more efficient and clean
-
         // but if there is \n it also means line++
-        if(this->input[pos] == '\n') line++;
+        if(peek() == '\n') line++;
         pos++;
     }
 }
