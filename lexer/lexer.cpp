@@ -175,6 +175,7 @@ std::vector<Token> Lexer::tokenize(){
 
         // 7. The last one is Invalid
         tokens.push_back({TokenType::INVALID, std::string(1, this->input[this->pos]), this->line});
+        this->pos++;
     }
 
     // when we reach EOF
