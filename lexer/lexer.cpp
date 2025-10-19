@@ -33,8 +33,8 @@ std::string Lexer::readIdentifier(){
 }
 
 bool Lexer::isKeyword(std::string &id){
-    if(id=="read" || id=="write" || id == "alert") return 1;
-    return 0;
+    static const std::unordered_set<std::string> keywords = {"read","write","alert"};
+    return keywords.find(id) != keywords.end();
 }
 
 std::string Lexer::readInteger(){
