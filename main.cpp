@@ -4,14 +4,10 @@ int main(){
     // in our program
     // A newline (\n) implicitly separates commands.
     // so doesn't need to end with ;
-    std::string input = R"(
-
-
-# Temperature monitoring
-read tempSensor
-write output, 100
-alert 2025-10-09T13:00:00
-)";
+    std::ifstream file("examples/example.slang");
+    std::stringstream buffer;
+    buffer << file.rdbuf(); // read entire file
+    std::string input = buffer.str();
 
     // lets bring our lexer here
     Lexer * lexer = new Lexer(input);
