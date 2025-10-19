@@ -1,6 +1,5 @@
 # SensorLang
-SensorLang is a mini programming language created as a project to simulate how compilers work.
-It’s a small, compiled language, where the compiler (written in C++) reads .slang source code and generates equivalent C++ code, which can then be compiled and executed.
+The lexer reads .slang source code and converts it into a list of tokens. Each token represents a meaningful unit, such as a keyword, identifier, literal, symbol, or comment.
 
 The language supports only a few basic commands used for IoT-like operations — reading sensor data, writing outputs, and generating alerts.
 
@@ -45,14 +44,19 @@ int main() {
 }
 ```
 
-## Architecture
-The compiler will have three simple parts:
-- Lexer: Breaks code into tokens (like words).
-- Parser: Checks if the order of tokens makes sense.
-- Code Generator: Writes equivalent C++ code into an output file.
 
-## Complete Process
-- STEP 1: Lexer
-- STEP 2: Parser
+## How It Works
+1. Lexer Initialization
+- Reads the source code from a file.
+- Initializes position and line counters.
+
+2. Tokenization Loop
+- Skips whitespace.
+- Identifies keywords, identifiers, integers, timestamps, symbols, and comments.
+- Marks invalid tokens with INVALID.
+- Appends an EOF token at the end.
+
+3. Output
+- Each token is printed with its type, value, and line number
 
 
